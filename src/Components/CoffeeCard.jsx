@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
 
-const CoffeeCard = ({ coffee }) => {
+const CoffeeCard = ({ coffee, coffees, setCoffees }) => {
   const { _id, name, quantity, price, details, photo } = coffee;
 
   const handleDelete = (_id) => {
@@ -15,6 +15,7 @@ const CoffeeCard = ({ coffee }) => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
+      timer: 5000,
     }).then((result) => {
       if (result.isConfirmed) {
         //send delete request to server
@@ -28,7 +29,11 @@ const CoffeeCard = ({ coffee }) => {
                 title: "Deleted!",
                 text: "Your coffee has been deleted.",
                 icon: "success",
+                timer: 1500,
               });
+              //remove deleted coffee from UI
+              const remainingCoffees = coffees.filter((cof) => cof._id !== _id);
+              setCoffees(remainingCoffees);
             }
           });
       }
@@ -54,8 +59,8 @@ const CoffeeCard = ({ coffee }) => {
           <Link to={`/coffee/${_id}`}>
             <button className="btn btn-primary">View</button>
           </Link>
-          <Link to={`/update-coffe/${_id}`}>
-            <button className="btn btn-primary">Edit</button>
+          <Link to={`/update-coffe/${coffee._id}`}>
+            <button className="btn btn-sm btn-primary">Update</button>
           </Link>
 
           <button onClick={() => handleDelete(_id)} className="btn btn-primary">

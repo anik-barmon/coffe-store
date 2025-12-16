@@ -1,8 +1,37 @@
 import React from "react";
+import { useLoaderData } from "react-router";
+import Swal from "sweetalert2";
 
 const UpdateCoffe = () => {
+  const { _id, name, quantity, supplier, taste, price, details, photo } =
+    useLoaderData();
+
   const handleUpdateCoffee = (event) => {
     event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    const updatedCoffee = Object.fromEntries(formData.entries());
+    // console.log(updatedCoffee);
+
+    fetch(`http://localhost:3000/coffees/${_id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedCoffee),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.result.modifiedCount > 0) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Coffee updated successfully",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
   };
   return (
     <div className=" p-24">
@@ -21,6 +50,7 @@ const UpdateCoffe = () => {
             {/* 1 */}
             <label className="label">Name</label>
             <input
+              defaultValue={name}
               name="name"
               type="text"
               className="input w-full"
@@ -31,6 +61,7 @@ const UpdateCoffe = () => {
           <fieldset className="fieldset  bg-base-200 border-base-300 rounded-box  border p-4">
             <label className="label">Quantity</label>
             <input
+              defaultValue={quantity}
               name="quantity"
               type="text"
               className="input w-full"
@@ -41,6 +72,7 @@ const UpdateCoffe = () => {
           <fieldset className="fieldset  bg-base-200 border-base-300 rounded-box  border p-4">
             <label className="label">Supplier</label>
             <input
+              defaultValue={supplier}
               name="supplier"
               type="text"
               className="input w-full"
@@ -51,6 +83,7 @@ const UpdateCoffe = () => {
           <fieldset className="fieldset  bg-base-200 border-base-300 rounded-box  border p-4">
             <label className="label">Taste</label>
             <input
+              defaultValue={taste}
               name="taste"
               type="text"
               className="input w-full"
@@ -61,6 +94,7 @@ const UpdateCoffe = () => {
           <fieldset className="fieldset  bg-base-200 border-base-300 rounded-box  border p-4">
             <label className="label">Price</label>
             <input
+              defaultValue={price}
               name="price"
               type="text"
               className="input w-full"
@@ -71,6 +105,7 @@ const UpdateCoffe = () => {
           <fieldset className="fieldset  bg-base-200 border-base-300 rounded-box  border p-4">
             <label className="label">Details</label>
             <input
+              defaultValue={details}
               name="details"
               type="text"
               className="input w-full"
@@ -82,6 +117,7 @@ const UpdateCoffe = () => {
         <fieldset className="fieldset   bg-base-200 border-base-300 rounded-box  border my-6 p-4">
           <label className="label mx-auto">photo</label>
           <input
+            defaultValue={photo}
             name="photo"
             type="text"
             className="input text-center w-full"
@@ -90,7 +126,7 @@ const UpdateCoffe = () => {
         </fieldset>
         <input
           type="submit"
-          value="Add Coffee"
+          value="Update Coffee"
           className="btn btn-block btn-primary"
         />
       </form>
