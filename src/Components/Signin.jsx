@@ -2,6 +2,14 @@ import React from "react";
 import { Link } from "react-router";
 
 const Signin = () => {
+  const handleSignIn = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(email, password);
+  };
+
   return (
     <div>
       <div className="flex justify-center items-center mt-32">
@@ -9,7 +17,7 @@ const Signin = () => {
           <h2 className="text-2xl divider mt-6 font-bold text-center">
             Login Your Account
           </h2>
-          <form className="card-body">
+          <form onSubmit={handleSignIn} className="card-body">
             <fieldset className="fieldset">
               {/* Email */}
               <label className="label">Email</label>
